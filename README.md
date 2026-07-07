@@ -4,7 +4,7 @@ Read and **w**rite document **outline**s from text files.
 
 ```
 $ woutline r test.pdf
-wrote 5 outline entries to test~OUTLINE.txt
+wrote 4 outline entries to test~OUTLINE.txt
 $ cat test~OUTLINE.txt
 1 Test document
     1 Introduction
