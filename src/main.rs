@@ -35,7 +35,11 @@ fn read(args: &mut env::Args) -> Result<()> {
     fs::write(&outline_path, outline_buf)
         .with_context(|| format!("writing outline to {outline_path}"))?;
 
-    println!("wrote {} TOC entries to {}", toc.toc.len(), outline_path);
+    println!(
+        "wrote {} outline entries to {}",
+        toc.toc.len(),
+        outline_path
+    );
 
     Ok(())
 }
