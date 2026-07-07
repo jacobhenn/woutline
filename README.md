@@ -1,6 +1,6 @@
 # woutline
 
-Read and **w**rite document **outline**s from text files.
+Read and **w**rite document **outline**s from text files. Currently, only PDFs are supported, and the PDF library used is kinda jank, so use at your own risk.
 
 ```
 $ woutline r test.pdf
