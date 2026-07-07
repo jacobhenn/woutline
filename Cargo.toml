@@ -1,7 +1,8 @@
 [package]
-name = "pdf-outliner"
+name = "woutline"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-lopdf = "0.42.0"
+anyhow = "1.0.103"
+lopdf = { path = "vendor/lopdf", features = ["serde", "rayon"], default-features = false }
