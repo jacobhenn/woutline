@@ -99,7 +99,6 @@ fn write(args: &mut env::Args) -> Result<()> {
         };
         let parent = parent_stack.last().copied();
         let bookmark_id = document.add_bookmark(bookmark, parent);
-        println!("{bookmark_id}: '{title}', parent {parent:?}; {prev_level}->{new_level}");
         prev_level = new_level;
         prev_bookmark_id = bookmark_id;
     }
