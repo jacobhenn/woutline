@@ -71,17 +71,23 @@ fn write(args: &mut env::Args) -> Result<()> {
     for (line_number, line) in outline_str.lines().enumerate() {
         let rest = line.trim_start();
         let new_level = (line.len() - rest.len()) / 4;
-        if new_level < prev_level {
+        for _ in new_level..prev_level {
             parent_stack.pop();
-        } else if new_level > prev_level {
+        }
+        if new_level > prev_level {
+            if new_level - prev_level > 1 {
+                bail!(
+                    "outline at {outline_path}: line {line_number}: can't increase level more than one unit at a time (old: {prev_level}, new: {new_level})"
+                );
+            }
             parent_stack.push(prev_bookmark_id);
         }
-        let (page_number_str, title) = rest.split_once(' ').with_context(|| format!("reading outline at {outline_path}: expected at least one space on line {line_number} to delimit page number from title"))?;
+        let (page_number_str, title) = rest.split_once(' ').with_context(|| format!("outline at {outline_path}: expected at least one space on line {line_number} to delimit page number from title"))?;
         let page_number: u32 = page_number_str.parse().with_context(|| {
-            format!("reading outline at {outline_path}: '{page_number_str}' is not an integer")
+            format!("outline at {outline_path}: '{page_number_str}' is not an integer")
         })?;
         let page_id = *pages.get(&page_number).with_context(|| {
-            format!("loading outline at {outline_path}: document does not have page {page_number}")
+            format!("outline at {outline_path}: document does not have page {page_number}")
         })?;
         let bookmark = Bookmark {
             children: Vec::new(),
@@ -93,6 +99,7 @@ fn write(args: &mut env::Args) -> Result<()> {
         };
         let parent = parent_stack.last().copied();
         let bookmark_id = document.add_bookmark(bookmark, parent);
+        println!("{bookmark_id}: '{title}', parent {parent:?}; {prev_level}->{new_level}");
         prev_level = new_level;
         prev_bookmark_id = bookmark_id;
     }
